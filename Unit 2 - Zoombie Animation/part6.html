@@ -1,0 +1,108 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser - Zombie Animation - Zombie quay lại </title>
+    <script src="./phaser/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+// Dựng 1 khung Game trống
+// Chiều ngang 800px - Chiều dài 600px
+// Phaser.AUTO tự động lựa chọn công nghệ dựng hình phù hợp với browser
+// '' là 1 string - chuỗi ứng với tên HTML tag, nếu để rỗng sẽ tự tạo trong <body>
+// gán các functions ở dưới để thực hiện từng bước để chạy game
+var game = new Phaser.Game(1200, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+// Các biến sẽ sử dụng
+var bg;
+var bgmusic;
+// Gộp tất cả zombie vào 1 nhóm
+var blueZombie;
+    
+var walls;
+    
+// Tải các assets sẽ sử dụng trước khi game chạy - image, spritesheet, audio
+function preload() {
+    game.load.image('bg', 'assets/images/bg.jpg');
+    // 50x78 là size của 1 frame, trong spritesheet có 10 frames
+    // tải spritesheet có tất cả 20 frames, frame 1 - 10 zombie đi từ phải qua trái, frame 10 - 20 từ trái qua phải
+    game.load.spritesheet('zombie', 'assets/images/zombie-walk2ways-1000x78.png', 50, 78);
+    // tải audio
+    game.load.audio('bgmusic', 'assets/sounds/zombie-voice.mp3');
+    // tải hình bức tường để gán vào 2 cạnh khung game
+    game.load.image('wall', 'assets/images/wall.png');
+}
+// Tạo nên các assets trong game - chạy sau khi hoàn thành preload()
+function create() {
+    // game.physics cho phép ta sử dụng các tính năng, hiệu ứng liên quan đến vật lý như di chuyển, tốc độ, trọng lực, nảy, va chạm,...
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // Tạo ảnh nền - gán với biến bg
+    bg = game.add.sprite(0, 0, 'bg');
+    bg.scale.set(2);
+    // Gán nhạc nền với biến bgmusic
+    bgmusic = game.add.sound('bgmusic');
+    bgmusic.volume = 1;
+    bgmusic.loop = false;
+    bgmusic.play();
+    
+    // Thêm tường
+    walls = game.add.group();
+    walls.create(-240, game.world.height - 256, 'wall');
+    
+    // Sử dụng vòng lặp - for loop để tạo ra nhiều zombie
+    // Thay vì mỗi zombie lại cần 1 tên riêng, chúng ta có thể gộp tất cả vào 1 nhóm blueZombie
+    blueZombie = game.add.group();
+    
+    // Cho phép sử dụng physics với tất cả các zombie trong blueZombie group
+    blueZombie.enableBody = true;
+    
+    for (var i = 0; i < 20; i++) {
+        // Vòng lặp chạy 20 lần từ i = 0 đến i = 19
+        // i bắt đầu từ 0, sau mỗi lần chạy giá trị tăng lên 1 thành 2, 3,....cho đến 19
+        // i < 20 là điều kiện kiểm tra - chỉ chạy đoạn code trong vòng lặp khi i < 20
+        
+        // tạo ra zombie
+        // sử dụng biến i để tạo nên các zombie ở vị trí khác nhau 
+        // sử dụng điều kiện với if-else để thay đổi y
+//        if (i < 5) {
+//            var zombie = blueZombie.create((1200 + 50*i), 500, 'zombie');
+//        } else if (i >= 5 && i < 10) {
+//            var zombie = blueZombie.create((1200 + 50*i), 400, 'zombie');
+//        } else if (i >= 10 && i < 15) {
+//            var zombie = blueZombie.create((1200 + 50*i), 500, 'zombie');
+//        } else {
+//            var zombie = blueZombie.create((1200 + 50*i), 450, 'zombie');
+//        }
+        
+        if (i % 2 == 0) { // khi i chia hết cho 2 - số dư khi i chia cho 2 là 0
+            var zombie = blueZombie.create((1200 + 50*i), 500, 'zombie');
+        } else { // khi i không chia hết cho 2
+            var zombie = blueZombie.create((1200 + 50*i), 450, 'zombie');
+        }
+        
+        // thêm animation 
+        zombie.animations.add('walk-left', [1,2,3,4,5,6,7,8,9], 10, true);
+        zombie.body.velocity.x = -50;
+        zombie.animations.play('walk-left');
+        // thêm animation đi từ trái qua phải
+        //zombie.animations.add('walk-right', [11,12,13,14,15,16,17,18,19,20], 10, true);
+    }  
+    
+}
+// Được gọi nhiều lần trên giây để cập nhật trạng thái của game - các hành động hay tương tác động sẽ xảy ra ở hàm này
+function update() {
+
+}
+
+</script>
+
+</body>
+</html>

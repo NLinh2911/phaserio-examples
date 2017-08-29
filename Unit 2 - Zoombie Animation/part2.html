@@ -1,0 +1,97 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser - Zoombie Animation - Tạo zombie thủ công từng con một </title>
+    <script src="./phaser/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+// Dựng 1 khung Game trống
+// Chiều ngang 800px - Chiều dài 600px
+// Phaser.AUTO tự động lựa chọn công nghệ dựng hình phù hợp với browser
+// '' là 1 string - chuỗi ứng với tên HTML tag, nếu để rỗng sẽ tự tạo trong <body>
+// gán các functions ở dưới để thực hiện từng bước để chạy game
+var game = new Phaser.Game(1200, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+// Các biến sẽ sử dụng
+var bg;
+var bgmusic;
+var zombie1; 
+var zombie2 
+var zombie3;
+// Tải các assets sẽ sử dụng trước khi game chạy - image, spritesheet, audio
+function preload() {
+    game.load.image('bg', 'assets/images/bg.jpg');
+    // 50x78 là size của 1 frame, trong spritesheet có 10 frames
+    game.load.spritesheet('zombie', 'assets/images/zombie-walk-500x78.png', 50, 78);
+    // tải audio
+    game.load.audio('bgmusic', 'assets/sounds/zombie-voice.mp3');
+}
+// Tạo nên các assets trong game - chạy sau khi hoàn thành preload()
+function create() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    // Cách 1 thủ công load lần lượt các hình - zombie đi từ phải sang trái 
+    bg = game.add.sprite(0, 0, 'bg');
+    bg.scale.set(2);
+    // Gán nhạc nền
+    bgmusic = game.add.sound('bgmusic');
+    bgmusic.volume = 0.5;
+    bgmusic.loop = false;
+    bgmusic.play();
+    zombie1 = game.add.sprite(1150, 500, 'zombie');
+    // enable - nâng cấp zombie với tính năng động: di chuyển, va chạm,...
+    game.physics.arcade.enable(zombie1);
+    zombie2 = game.add.sprite(1250, 500, 'zombie');
+    game.physics.arcade.enable(zombie2);
+    zombie3 = game.add.sprite(1350, 500, 'zombie');
+    game.physics.arcade.enable(zombie3);
+    
+    zombie4 = game.add.sprite(1200, 410, 'zombie');
+    game.physics.arcade.enable(zombie4);
+    zombie5 = game.add.sprite(1400, 450, 'zombie');
+    game.physics.arcade.enable(zombie5);
+    
+    // Thêm animation cho zombies đi từ phải sang trái
+    // 'walk': tên của hành động - 10: số lần frames chạy trên 1 giây - true: lặp animation
+    zombie1.animations.add('walk',[1,2,3,4,5,6,7,8,9,10], 10, true);
+    // tốc độ di chuyển của zombie theo chiều ngang 
+    // đi từ phải sang trái nên tốc độ là -50, giảm tọa độ trục X 50px/giây
+    zombie1.body.velocity.x = -50;
+    // chạy animation tên 'walk'
+    zombie1.animations.play('walk');
+    
+    zombie2.animations.add('walk', [1,2,3,4,5,6,7,8,9,10], 10, true);
+    zombie2.body.velocity.x = -50;
+    zombie2.animations.play('walk');
+    
+    zombie3.animations.add('walk', [1,2,3,4,5,6,7,8,9,10], 10, true);
+    zombie3.body.velocity.x = -50;
+    zombie3.animations.play('walk');
+    
+    zombie4.animations.add('walk', [1,2,3,4,5,6,7,8,9,10], 10, true);
+    zombie4.body.velocity.x = -50;
+    zombie4.animations.play('walk');
+    
+    zombie5.animations.add('walk', [1,2,3,4,5,6,7,8,9,10], 10, true);
+    zombie5.body.velocity.x = -50;
+    zombie5.animations.play('walk');
+
+    
+    
+}
+// Được gọi nhiều lần trên giây để cập nhật trạng thái của game - các hành động hay tương tác động sẽ xảy ra ở hàm này
+function update() {
+}
+
+</script>
+
+</body>
+</html>

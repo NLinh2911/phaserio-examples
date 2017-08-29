@@ -1,0 +1,38 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser - Blank Template /title>
+    <script src="./phaser/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+// Dựng 1 khung Game trống
+// Chiều ngang 800px - Chiều dài 600px
+// Phaser.AUTO tự động lựa chọn công nghệ dựng hình phù hợp với browser
+// '' là 1 string - chuỗi ứng với tên HTML tag, nếu để rỗng sẽ tự tạo trong <body>
+// gán các functions ở dưới để thực hiện từng bước để chạy game
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+// Tải các assets sẽ sử dụng trước khi game chạy - image, spritesheet, audio
+function preload() {
+    
+}
+// Tạo nên các assets trong game - chạy sau khi hoàn thành preload()
+function create() {
+
+}
+// Được gọi nhiều lần trên giây để cập nhật trạng thái của game - các hành động hay tương tác động sẽ xảy ra ở hàm này
+function update() {
+}
+
+</script>
+
+</body>
+</html>
